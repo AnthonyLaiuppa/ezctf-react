@@ -1,7 +1,7 @@
 ### EZCTF - React
 ---
 
-This is the front-end written to accompany the Golang api portion of the EZCTF - Webapp.
+This is the front-end written to accompany [the Golang api portion](https://github.com/AnthonyLaiuppa/ezctf-api) of the EZCTF - Webapp.
 
 A continuation of [my EZCTF app from last year.](https://github.com/AnthonyLaiuppa/ezctf) 
 
