@@ -26,7 +26,7 @@ export default class SolveButton extends Component {
 
       <div>
         <Button variant="primary" onClick={() => this.setState({ show: true})}> Solve </Button>
-        {console.log(this.state.data)}
+        
         <Solve modal={this.state.show} data={this.state.data}/>
       </div>
       

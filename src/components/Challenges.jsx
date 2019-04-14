@@ -39,9 +39,9 @@ async fetchData(){
       .catch(error => console.log('Parsing failed', error)) 
 
       var sItems= this.groupBy(this.state.items, 'Category')
-      console.log(sItems)
+      //console.log(sItems)
       this.setState.items = JSON.stringify(sItems)
-      console.log(this.state.items)
+      //console.log(this.state.items)
 
   }
 
@@ -90,8 +90,8 @@ async fetchData(){
               <tr key={row.id}>
                 <td key={row.Name}>{row.Name}</td>
                 <td key={row.Category}>{row.Category}</td>
-                <td key={row.Points}>{row.Points}</td>
-                <td key={row.Solves}>{row.Solves}</td>
+                <td>{row.Points}</td>
+                <td>{row.Solves}</td>
                 <td key={row.updated_at}>{row.updated_at}</td>
                 <td key={row}><SolveButton data={row}/></td>        
               </tr>
