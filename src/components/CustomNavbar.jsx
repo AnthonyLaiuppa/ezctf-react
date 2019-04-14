@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Navbar, Nav } from 'react-bootstrap';
+import { Navbar, Nav, Container} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import './CustomNavbar.css'
 
@@ -7,6 +7,7 @@ export default class CustomNavbar extends Component {
   render() {
     return (
       <Navbar default collapseOnSelect expand="lg">
+        <Container>
           <Navbar.Brand href="/">ezCTF</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
@@ -27,6 +28,7 @@ export default class CustomNavbar extends Component {
           </Nav>
 
         </Navbar.Collapse>
+        </Container>
       </Navbar>
     )
   }

@@ -51,7 +51,9 @@ export default class Login extends Component {
           'Accept': 'application/json'
         },
         body: JSON.stringify(submittal)
-      }).then(this.status).then(this.json)
+      })
+      .then(this.status)
+      .then(this.json)
       .then(function(data){
           //console.log(data)
           localStorage.setItem('token', data['token']);

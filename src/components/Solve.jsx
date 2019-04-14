@@ -6,30 +6,38 @@ export default class Solve extends Component {
 
   constructor(props, context) {
     super(props, context);
-    this.state = { show: props.modal };
+    this.state = { 
+      show: props.modal,
+      data: props.data,
+     };
 
 
-    this.state = {
-      show: false,
-    };
+
   }
   componentWillReceiveProps(nextProps){
 		if(this.state.show!==nextProps.modal){
 			this.setState({show: nextProps.modal})
+      this.setState({data: nextProps.data})
       }
     }
 
   render() {
 
   	let close = () => this.setState({ show: false});
-
+    var {data} = this.state;
     return (
 
+
         <Modal show={this.state.show} onHide={close}>
-          <Modal.Header closeButton>
-            <Modal.Title>Challenge Title</Modal.Title>
+
+          {console.log(data.Name)}
+          <div>
+          <Modal.Header closeButton> 
+            <Modal.Title>{data.Name} </Modal.Title>
           </Modal.Header>
-          <Modal.Body>The text of the challenge will go here</Modal.Body>
+
+          <Modal.Body>{data.RawText}</Modal.Body>
+          
           <Modal.Footer>
             <Button variant="secondary" onClick={close}>
               Close
@@ -38,6 +46,9 @@ export default class Solve extends Component {
               Submit
             </Button>
           </Modal.Footer>
+
+          </div>
+
         </Modal>
     )
   }

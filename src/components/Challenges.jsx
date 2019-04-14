@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Container, Spinner, Card, CardColumns, Badge, Button } from 'react-bootstrap';
-import Solve from './Solve'
+import { Container, Spinner, Table } from 'react-bootstrap';
+import SolveButton from './SolveButton'
 import './Challenges.css';
 
 export default class Challenges extends Component {
@@ -38,11 +38,28 @@ async fetchData(){
       })
       .catch(error => console.log('Parsing failed', error)) 
 
+      var sItems= this.groupBy(this.state.items, 'Category')
+      console.log(sItems)
+      this.setState.items = JSON.stringify(sItems)
+      console.log(this.state.items)
+
   }
 
 
+    groupBy(array, property) {
+    var hash = {};
+    for (var i = 0; i < array.length; i++) {
+        if (!hash[array[i][property]]) hash[array[i][property]] = [];
+        hash[array[i][property]].push(array[i]);
+    }
+    return hash;
+  }
+
   render() {
+
+
     var {isLoaded, items} = this.state;
+
     if (!isLoaded){
       return (
         <div>
@@ -56,33 +73,35 @@ async fetchData(){
       <div>
         <br /><br />
         <Container>
-          <CardColumns>
-          {items.map(item => ( 
-            <Card key={item.id} className="text-center">
-              <Card.Header as="h5">        <div>
-                <Badge pill variant="primary" className="pill-info">
-                  Type: {item.Category}
-                </Badge>&nbsp;
-                <Badge pill variant="secondary" className="pill-info">
-                  Points: {item.Points}
-                </Badge>&nbsp;
-                <Badge pill variant="success" className="pill-info">
-                  Solves: {item.Solves}
-                </Badge>&nbsp;
-                </div></Card.Header>
-                <Card.Body>
-                  <Card.Title>{item.Name}</Card.Title>
-                  <Solve modal={this.state.show} />
+          
+          <Table striped bordered hover variant="dark">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Points</th>
+                <th>Solves</th>
+                <th>Last Updated</th>
+                <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            {items.map(row => (
+              <tr key={row.id}>
+                <td key={row.Name}>{row.Name}</td>
+                <td key={row.Category}>{row.Category}</td>
+                <td key={row.Points}>{row.Points}</td>
+                <td key={row.Solves}>{row.Solves}</td>
+                <td key={row.updated_at}>{row.updated_at}</td>
+                <td key={row}><SolveButton data={row}/></td>        
+              </tr>
+            ))}
 
-                  <Button variant="info" onClick={() => this.setState({ show: true})}>Solve</Button>
+            </tbody>
+          </Table>   
 
-                  <Card.Text>
-                    <small> Last Updated: {item.updated_at}  </small> 
-                  </Card.Text>
-              </Card.Body>
-            </Card>
-          ))}
-          </CardColumns>
+
+
         </Container>
       </div>
     )
