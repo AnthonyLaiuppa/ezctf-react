@@ -19,14 +19,20 @@ export default class Solve extends Component {
   }
   status(response) {
       if (response.status >= 200 && response.status < 300) {
+        console.log('Success!')
         return Promise.resolve(response)
       }else {
+        console.log('Invalid flag')
         return Promise.reject()
       }
   }
 
   json(response) {
       return response.json()
+  }
+
+  getToken() {
+     return 'Bearer ' + localStorage.getItem('token')
   }
 
   componentWillReceiveProps(nextProps){
@@ -46,9 +52,9 @@ export default class Solve extends Component {
     
     event.preventDefault();
     
-    var submittal = {"flag": this.state.flag}
+    var submittal = {"Flag": this.state.flag}
     console.log(JSON.stringify(submittal))
-    var solveURL = "http://127.0.0.1:8080/solve/challenge/";
+    var solveURL = "http://127.0.0.1:8080/api/v1/solve/challenge/";
     var challenge = this.state.data.id;
     var res = solveURL.concat(challenge)
     console.log(res)
@@ -62,7 +68,8 @@ export default class Solve extends Component {
         mode: 'cors',
         headers: { 
           'Content-Type': 'application/json',
-          'Accept': 'application/json'
+          'Accept': 'application/json',
+          'Authorization': this.getToken()
         },
         body: JSON.stringify(submittal)
       })
