@@ -21,7 +21,10 @@ export default class Solve extends Component {
       if (response.status >= 200 && response.status < 300) {
         console.log('Success!')
         return Promise.resolve(response)
-      }else {
+      } else if (response.status === 403) {
+        console.log('Already solved')
+        return Promise.reject()
+      } else {
         console.log('Invalid flag')
         return Promise.reject()
       }
@@ -130,9 +133,6 @@ export default class Solve extends Component {
             
           </Modal.Body>
           
-
-
-
           </div>
 
         </Modal>
