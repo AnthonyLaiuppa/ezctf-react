@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import './Solve.css';
+import SolveAlert from './SolveAlert';
 
 
 export default class Solve extends Component {
@@ -12,21 +13,21 @@ export default class Solve extends Component {
       data: props.data,
       flag: '',
       isLoading: false,
+      alert: false,
+      status: '',
      };
 
-
+     this.status = this.status.bind(this)
 
   }
   status(response) {
       if (response.status >= 200 && response.status < 300) {
-        console.log('Success!')
+        this.setState({status:response.status});
         return Promise.resolve(response)
       } else if (response.status === 403) {
-        console.log('Already solved')
-        return Promise.reject()
+        return Promise.reject(response)
       } else {
-        console.log('Invalid flag')
-        return Promise.reject()
+        return Promise.reject(response)
       }
   }
 
@@ -56,11 +57,9 @@ export default class Solve extends Component {
     event.preventDefault();
     
     var submittal = {"Flag": this.state.flag}
-    console.log(JSON.stringify(submittal))
     var solveURL = "http://127.0.0.1:8080/api/v1/solve/challenge/";
     var challenge = this.state.data.id;
     var res = solveURL.concat(challenge)
-    console.log(res)
     this.setState({isLoading:true});
 
  
@@ -78,19 +77,35 @@ export default class Solve extends Component {
       })
       .then(this.status)
       .then(this.json)
-      .then(function(data){
-          console.log(data)
-          //localStorage.setItem('token', data['token']);
-        });
+      .then(data => {
+        this.setState({ alert: true });
+
+        setTimeout(() =>{
+          this.setState({ alert: false });
+          this.setState.flag='';
+          this.setState({ isLoading:false });
+          this.setState({ show:false });
+        }, 2000);
+
+        })
+      .catch(error => {
+
+        this.setState({status:error.status});
+        this.setState({ alert: true });
+
+         setTimeout(() =>{
+          this.setState({ alert: false });
+          this.setState.flag='';
+          this.setState({ isLoading:false });
+          
+          if(this.state.status === 403){
+            this.setState({ show:false });
+          }
+        }, 2000);
+
+      });
         
-      this.setState.flag='';
-
-      this.setState({ isLoading:false});
-      this.setState({ show:false});
-      
-    
     }, 2000);
-
 
   }
 
@@ -98,20 +113,17 @@ export default class Solve extends Component {
   render() {
 
   	let close = () => this.setState({ show: false});
-    var {data, isLoading} = this.state;
+    var {data, isLoading, alert, status} = this.state;
     return (
-
 
         <Modal show={this.state.show} onHide={close}>
 
-          
           <div>
           <Modal.Header closeButton> 
             <Modal.Title>{data.Name} </Modal.Title>
           </Modal.Header>
 
           <Modal.Body>
-
             {data.RawText}
             <br /><hr />
             <Form onSubmit={!isLoading ? (event) => this.onSubmit(event) : null}>
@@ -123,15 +135,23 @@ export default class Solve extends Component {
                 </Form.Text>
               </Form.Group>
 
-
               <Button variant="primary" type="submit" id="submitButton">
                 Submit
               </Button>
-
-
-            </Form>
-            
+             </Form>
           </Modal.Body>
+
+          <Modal.Footer>
+
+          {alert ? (
+
+            <SolveAlert status={status} alert={alert} /> 
+            
+          ) : ( 
+            null
+          )}
+
+          </Modal.Footer>
           
           </div>
 

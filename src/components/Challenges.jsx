@@ -20,7 +20,6 @@ export default class Challenges extends Component {
 
 async fetchData(){
 
-  //We'll get ID or something passed in to this component to feed in here for the fetch
     await fetch('http://127.0.0.1:8080/api/v1/challenges/', {
       method: "GET",
       mode : "cors",
@@ -39,9 +38,7 @@ async fetchData(){
       .catch(error => console.log('Parsing failed', error)) 
 
       var sItems= this.groupBy(this.state.items, 'Category')
-      //console.log(sItems)
       this.setState.items = JSON.stringify(sItems)
-      //console.log(this.state.items)
 
   }
 
